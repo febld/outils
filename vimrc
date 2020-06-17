@@ -29,6 +29,8 @@ let g:typescript_indent_disable = 1
 " ------------------------------------------------------------------------------
 " Plugin NEERDTree
 map <C-n> :NERDTreeToggle<CR>
+cmap NRight let g:NERDTreeWinPos="right"
+cmap NLeft let g:NERDTreeWinPos="left"
 
 " ------------------------------------------------------------------------------
 " Plugin : TagBar
