@@ -42,7 +42,8 @@
         aptitude update
         aptitude upgrade
         aptitude install build-essential module-assistant
-        m-a prepare ### --> cliquer sur le Menu -> Périphériques -> Installer l'image CD des additions invité Install Guest Additions
+        m-a prepare
+        # --> cliquer sur le Menu -> Périphériques -> Installer l'image CD des additions invité Install Guest Additions
         mount /media/cdrom
         cd /media/cdrom
         sh VBoxLinuxAdditions.run
