@@ -1,0 +1,70 @@
+# ---------------------------------------------------------------------------- #
+#                      Raccourcis clavier i3    (feb / bépo)                   #
+# ---------------------------------------------------------------------------- #
+MENU + Entrée      terminal             MENU + Maj + "x"   reload conf i3
+MENU + Maj + "q"   kill/Quit            MENU + Maj + "z"   restart i3
+MENU + "d"         Dmenu_run            MENU + Maj + "e"   Exit i3
+# split-layout-focus ------------------ resize windows------------------------ #
+MENU + "h"         split Horizont.      MENU + "z"         enter resiZe mode
+MENU + "v"         split Vertical.          {  "t"         shrink  width
+MENU + "f"         toggle Fullscreen           "s"         shrink  height
+MENU + "k"         layout stacKing             "r"         grow    height
+MENU + "b"         layout taBBed               "n"         grow    width
+MENU + "p"         layout sPlit                Left        shrink  width
+MENU + Esp         focus tile/float            Down        shrink  height
+MENU + "a"         focus parent                Up          grow    height
+MENU + Maj + Esp   toggle tile/float           Right       grow    width
+                                                 Return      exit resize mode
+                                                 Escape      exit resize mode
+                                                 MENU + "o"  exit resize mode
+                                              }
+# change focus ------------------------ move focused window ------------------ #
+MENU + "t"         focus left           MENU + Maj + "t"   move left
+MENU + "s"         focus down           MENU + Maj + "s"   move down
+MENU + "r"         focus up             MENU + Maj + "r"   move up
+MENU + "n"         focus right          MENU + Maj + "n"   move right
+MENU + Left        focus left           MENU + Maj + Left  move left
+MENU + Down        focus down           MENU + Maj + Down  move down
+MENU + Up          focus up             MENU + Maj + Up    move up
+MENU + Right       focus right          MENU + Maj + Right move right
+# switch to workspace ----------------- move focused container to workspace -- #
+MENU +  "          display $ws1         MENU + Maj +  "    move cont. to $ws1
+MENU + "«"         display $ws2         MENU + Maj + "«"   move cont. to $ws2
+MENU + "»"         display $ws3         MENU + Maj + "»"   move cont. to $ws3
+MENU + "("         display $ws4         MENU + Maj + "("   move cont. to $ws4
+MENU + ")"         display $ws5         MENU + Maj + ")"   move cont. to $ws5
+MENU + "@"         display $ws6         MENU + Maj + "@"   move cont. to $ws6
+MENU + "+"         display $ws7         MENU + Maj + "+"   move cont. to $ws7
+MENU + "-"         display $ws8         MENU + Maj + "-"   move cont. to $ws8
+MENU + "/"         display $ws9         MENU + Maj + "/"   move cont. to $ws9
+MENU + "*"         display $ws10        MENU + Maj + "*"   move cont. to $ws10
+#
+# ---------------------------------------------------------------------------- #
+#                      Raccourcis clavier VIM                                  #
+# ---------------------------------------------------------------------------- #
+CTRL + "w" + "h"   focus left window    CTRL + "w" + "H"   mv window to Left
+CTRL + "w" + "j"   focus bottom window  CTRL + "w" + "J"   mv window to Bottom
+CTRL + "w" + "k"   focus top window     CTRL + "w" + "K"   mv window to Top
+CTRL + "w" + "l"   focus right window   CTRL + "w" + "L"   mv window to Right
+CTRL + "w" + "-"   decrease height      CTRL + "w" + "+"   increase height      
+CTRL + "w" + "<"   decrease width       CTRL + "w" + ">"   increase width
+CTRL + "w" + "w"   focus next window
+CTRL + "n"         Menu NERDTree
+#
+# ---------------------------------------------------------------------------- #
+#                      Raccourcis clavier NERDTree                             #
+# ---------------------------------------------------------------------------- #
+"m"  Menu NerdTree                      "A"  Zoom (maximize-minimiwe
+"C"  change tree root to selected dir   "o"  file : open in current window
+"u"  move tree root up a dir            "o"  dir  : open/close node
+"U"  idem but leave old root open       "O"  dir  : recursively open node
+"cd" change CWD to selected             "t"  open in new tab     
+"CD" change tree root to CWD            "T"  open in new tab silently
+"k"  go one node up                     "i"  open split
+"j"  go one node down                   "s"  open vsplit
+"K"  go to 1st child (current dir)      "x"  close parent of node
+"J"  go to last child (current dir)     "X"  close all child nodes of current
+"P"  go to root dir                     
+"p"  go to parent dir                   
+"r"  refresh cursor dir                 
+"R"  refresh current root               "q"  close NERDTree window
