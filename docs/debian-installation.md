@@ -50,3 +50,18 @@
          ...
         shutdown -r now
 
+## Debian 11 & Dell Vostro 5471
+
+* Matériel
+
+    . BIOS            :  BIOS revision 1.22.0
+    . Carte mère      :
+    . CPU             :  Intel Core i7-8550U
+    . Mémoire         :  DDR4 8gb 2400 Mhz
+    . Disque Dur      :  128Gb SSD
+    . Disque Dur      :  1To 5400tr/mn
+    . Carte graphique :  AMD Radeon 530 4Go mémoire graphique GDDR5
+    . Wireless        :  Intel 3165AC BlueTooth 4.2 Wi-Fi5 802.11ac, 2,4 & 5Ghz
+
+* BIOS
+* Installation
