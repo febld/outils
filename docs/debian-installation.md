@@ -155,6 +155,11 @@
 
         ```
         vi /etc/apt/sources.list   # ajouter contrib non-free aux dépots
+            ...
+            deb http://deb.debian.org/debian/ bullseye main contrib non-free
+            deb http://security.debian.org/debian-security bullseye-security main contrib non-free
+            deb http://deb.debian.org/debian/ bullseye-updates main contrib non-free
+            ...
         apt-get update
         apt-get install aptitude
         aptitude update
