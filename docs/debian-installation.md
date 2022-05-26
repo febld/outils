@@ -83,6 +83,7 @@
         Carte Son       :  
         Webcam          :  Integrated_Webcam_HD
 
+
        * https://wiki.debian.org/InstallingDebianOn/Dell
          * Inspiron 15 5579 Stretch : pb sur wifi Intcel 3165 (infos contournement
        * https://forums.debian.net/viewtopic.php?t=149635 : Radeon 530
