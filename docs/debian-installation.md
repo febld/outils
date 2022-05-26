@@ -139,13 +139,17 @@
 
     * Configuration après boot  En root
 
+        ```
         su -
+        ```
 
       * BÉPO (!!! à approfondir : ne marche jamais au 1er coup ???)
     
+        ```
         aptitude install console-data            # -> nécessaire pour BÉPO ??, ne pas modifier le clavier
         dpkg-reconfigure keyboard-configuration  # -> Bépo, ergonomique, façon Dvorak
         shutdown -r now
+        ```
    
       * environnement système, graphique, audio, ntfs ...
 
