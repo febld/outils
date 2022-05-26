@@ -134,22 +134,29 @@
         * Login OK
 
     * Configuration après boot  En root
-
             su -
-            apt-get install aptitude
-            aptitude update
-            aptitude install firmware-iwlwifi
+
+        * BÉPO (!!! à approfondir : ne marche jamais au 1er coup ???)
     
-            dpkg-reconfigure keyboard-configuration  # -> Bépo, ergonomique, façon Dvorak
             aptitude install console-data            # -> nécessaire pour BÉPO ??, ne pas modifier le clavier
+            dpkg-reconfigure keyboard-configuration  # -> Bépo, ergonomique, façon Dvorak
             shutdown -r now
    
         * environnement système, graphique, audio, ntfs ...
+
+            vi /etc/apt/sources.list   # ajouter contrib non-free aux dépots
+            apt-get update
+            apt-get install aptitude
+            aptitude update
+            aptitude install firmware-iwlwifi
 
             aptitude install i3
             aptitude install xorg
             aptitude install lightdm   # ou xdm mais lightdm + ergonomique
             aptitude install xterm
+            
+            shutdown -r now  # --> tester i3
+            
             aptitude install git
             aptitude install pulseaudio pavucontrol pulseaudio-module-bluetooth  # pulse audio volume control sinon haut-parleur quasi muet
             aptitude install ntfs-3g fuse
@@ -158,7 +165,7 @@
 
         * navigateur, messagerie, bureautique
 
-            aptitude install firefox libreoffice thunderbird
+            aptitude install firefox-esr libreoffice thunderbird
             aptitude install keepassxc    # coffre-fort
             aptitude install cmus         # lecteur musique
 
@@ -167,7 +174,7 @@
             aptitude install hplip hplip-gui
             # brancher le scanner
             hp-setup
-            aptitude install sane-airscan
+            aptitude install sane-airscan   # lister scanners : "scanimage -L"
     
         * configuration WIFI
             * voir https://wiki.debian.org/fr/WiFi/HowToUse
