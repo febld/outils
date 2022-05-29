@@ -58,7 +58,8 @@
     * KeePass     : v2.39.1
 
     ```
-    sudo apt install keepass2 mono-complete xdotool   #ou utiliser KeePassXC ?  (compatibilité Keepass 2.x)
+    #sudo apt install keepass2 mono-complete xdotool
+    #ou utiliser KeePassXC ?  (compatibilité Keepass 2.x)
     sudo apt install keepassxc
     ```
 
@@ -164,16 +165,20 @@
         apt-get install aptitude
         aptitude update
         aptitude install firmware-iwlwifi
+        aptitude install nmap
+        aptitude install sudo      # + ajouter utilisateur dans groupe "sudoers" : /etc/group
 
         aptitude install i3
         aptitude install xorg
         aptitude install lightdm   # ou xdm mais lightdm + ergonomique
         aptitude install xterm
 
+
         shutdown -r now  # --> tester i3
 
         aptitude install git
         aptitude install pulseaudio pavucontrol pulseaudio-module-bluetooth  # pulse audio volume control sinon haut-parleur quasi muet
+        aptitude install blueman        # pour gérer bluetooth
         aptitude install ntfs-3g fuse
         aptitude install ifscheme       # pour gérer différents profils réseau
         aptitude install jmtpfs         # pour accéder aux téléphones Android en MTP
