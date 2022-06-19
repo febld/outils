@@ -199,6 +199,7 @@
         # brancher le scanner
         hp-setup
         aptitude install sane-airscan   # lister scanners : "scanimage -L"
+        #aptitude install imagemagick    # pour outils de conversion pdf ?
         ```
     
       * configuration WIFI
