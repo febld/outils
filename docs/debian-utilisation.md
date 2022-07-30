@@ -1,21 +1,13 @@
 # Installation DEBIAN
 
-##  Android et JMTPFS
-
-
-        ```
-        mkdir -p <DIRECTORY>
-        jmtpfs <DIRECTORY>/
-        ```
-
-        ```
-        fusermount -u <DIRECTORY>/
-        ```
-
 ## imprimante/scanner HP
 
         ```
-        xxxx
+        scanimage -d "airscan:e0:HP ENVY 5000 series [E763CC] (USB)" --format png
+        ```
+    
+        ```
+        simple-scan
         ```
     
 ## 2ème écran
@@ -52,7 +44,21 @@
            <- -> : avance/recul de 10 secondes
            b     : prochain morceau
            z     : précédent morceau
+    * asunder : chargement de cd-audio et extraction en AAC, OGG, MP3, FLAC, WAV, ...
        
+
+##  Android et JMTPFS
+
+
+        ```
+        mkdir -p <DIRECTORY>
+        jmtpfs <DIRECTORY>/
+        ```
+
+        ```
+        fusermount -u <DIRECTORY>/
+        ```
+
 
 ## Disques USB
 

@@ -192,6 +192,12 @@
         aptitude install cmus         # lecteur musique
         ```
 
+      * lecteur cd audio
+
+        ```
+        aptitude install fdkaac asunder  # logiciel "asunder" pour lire cd-audio et transformer en aac, mp3, ogg, flac, ...
+        ```
+
       * imprimante/scanner HP
 
         ```
