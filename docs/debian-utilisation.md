@@ -97,6 +97,38 @@
         vm.dirty_background_bytes=16777216
         ```
 
+## Réseau WIFI
+
+    * Recherche d'interfaces réseau WIFI
+
+        ```
+        ip a
+        iw dev
+        ip link set wlp3s0 up
+        ```
+
+    * Recherche des réseaux wifi disponibles pour récupérer l'id/ESSID
+
+        ```
+        iwlist scan
+        ```
+
+    * Configuration du fichier /etc/network/interfaces
+
+        ```
+        allow-hotplug wlp3s0  # pour démarrer l'interface automatiquement au boot
+        iface wlp3s0 inet dhcp
+            wpa-ssid <ESSID>
+            wpa-psk  <PASSWORD>
+        ```
+
+    * Activation interface et vérification connexion
+
+        ```
+        ifup  wlp3s0
+        iw wlp3s0 link
+        ip a
+
 ## Matériel / Pilote
 
         $ lspci -nn | grep VGA
