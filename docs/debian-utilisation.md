@@ -13,7 +13,10 @@
 ## 2ème écran
 
         ```
-        xrandr --output HDMI-1 --auto --right-of eDP1  # active le 2ème écran
+        xrandr --output HDMI-1 --auto --right-of eDP-1  # active le 2ème écran à droite
+        xrandr --output HDMI-1 --auto --left-of  eDP-1  # active le 2ème écran à gauche
+        xrandr --output HDMI-1 --auto --above    eDP-1  # active le 2ème écran au dessus
+        xrandr --output HDMI-1 --auto --below    eDP-1  # active le 2ème écran au dessous
         ```
 
 ## Audio / bluethooth
@@ -122,15 +125,36 @@
             wpa-psk  <PASSWORD>
         ```
 
+    * Configuration du fichier /etc/wpa_supplicant/wpa_supplicant.conf /!\ ne fonctionne pas ???
+
+        ```
+        ctrl_interface=/run/wpa_supplicant
+        update_config=1
+        
+        network={
+	        ssid="wifi1"
+	        psk="ModeDePasseWifi1"
+        }
+        network={
+	        ssid="wifi2"
+	        psk="ModeDePasseWifi2"
+        }
+        ...
+        ```
+
     * Activation interface et vérification connexion
 
         ```
         ifup  wlp3s0
         iw wlp3s0 link
+        iw dev wlp3s0 info
         ip a
+        ```
 
 ## Matériel / Pilote
 
+        ```
         $ lspci -nn | grep VGA
         $ cat /proc/bus/pci/devices
         $ lsusb
+        ```

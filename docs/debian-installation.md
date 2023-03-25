@@ -36,7 +36,7 @@
          * $mod+Enter : terminal
 
 
-  * Virtualbox : installation adds-on
+  * Virtualbox : installation adds-on sur Invité Linux
 
         su -
         aptitude update
@@ -238,6 +238,128 @@
         ifup wlp3s0
         ```
 
+    * Virtualbox : installation Hôte sur Linux
+
+        * Mettre à jour /etc/apt/sources.list avec le dépôt virtualbox :
+
+        ```
+        deb [arch=amd64 signed-by=/usr/share/keyrings/oracle-virtualbox-2016.gpg] https://download.virtualbox.org/virtualbox/debian bullseye contrib"
+        ```
+
+        * Récupérer la clé publique oracle et l'ajouter :
+
+        ```
+        wget -O- https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo gpg --dearmor --yes --output /usr/share/keyrings/oracle-virtualbox-2016.gpg
+        ```
+
+        * Installer virtualbox :
+
+        ```
+        aptitude update
+        aptitude install virtualbox-7.0
+        ```
+
+       * Si erreur au démarrage sur module kernel car système en "Secure Boot Mode" et modules virtualbox non signés :
+
+        1) procéder à la signature des modules kernel de virtualbox pour le Secure Boot UEFI (cf chapitre ci-dessous)
+        2) lancer vboxconfig
+       
+
+        ```
+        sudo /sbin/vboxconfig
+            vboxdrv.sh: Stopping VirtualBox services.
+            vboxdrv.sh: Starting VirtualBox services.
+            vboxdrv.sh: Building VirtualBox kernel modules.
+            vboxdrv.sh: Signing VirtualBox kernel modules.
+        ```
+
+    * Virtualbox : créer un raw disk image (pour boot windows dans hote linux)
+
+        https://ostechnix.com/how-to-boot-from-usb-drive-in-virtualbox-in-linux/
+
+        ```
+        VBoxManage createmedium disk --filename="/home/feb/VirtualBox VMs/usbdisk1.vmdk" --variant=RawDisk --format=VMDK --property RawDrive=/dev/sdc
+        #VBoxManage internalcommands createrawvmdk -filename "/home/feb/VirtualBox VMs/usbdisk1.vmdk" -rawdisk /dev/sdc1
+        chown feb:feb rawdisk.vmdk
+        usermod -a -G vboxusers feb
+        usermod -a -G disk feb
+        ```
+
+    * Signer les modules kernel pour le UEFI Secure Boot
+     
+        . Vérifier si le système est démarré via SecureBoot (cf: https://wiki.debian.org/SecureBoot) :
+
+        ```
+        mokutil --sb-state
+        ```
+
+        . Générerla clé (inutile si MOK.der, MOK.pem et MOK.priv sont déjà présents):
+
+        ```
+        mkdir -p /var/lib/shim-signed/mok/
+        cd /var/lib/shim-signed/mok/
+        openssl req -new -x509 -newkey rsa:2048 -keyout MOK.priv -outform DER -out MOK.der -days 36500 -subj "/CN=My Name/"
+        #### pass phrase : "geronimo"
+        openssl x509 -inform der -in MOK.der -out MOK.pem
+        ```
+
+        . Enrollement de la clé :
+
+        ```
+        mokutil --import MOK.der # prompts for one-time password : "geronimo"
+        mokutil --list-new       # recheck your key will be prompted on next boot
+        ```
+
+        . Rebooter et aller dans le MOK Manager EFI utility: enroll MOK, continue, confirm, enter password, reboot
+
+          !!! Au boot, le clavier est probablement en QWERTY lors de la saisie du mot de passe
+
+        ```
+        dmesg | grep cert        # verify your key is loaded
+        ```
+
+        . Initialiser les variables suivantes avant de travailler sur les modules :
+
+        ```
+        VERSION="$(uname -r)"
+        SHORT_VERSION="$(uname -r | cut -d . -f 1-2)"
+        MODULES_DIR=/lib/modules/$VERSION
+        KBUILD_DIR=/usr/lib/linux-kbuild-$SHORT_VERSION
+        ```
+        
+       * Aller dans le sous répertoire  du module (selon Oracle/Virtualbox ou dkms)
+
+        ```
+        cd "$MODULES_DIR/updates/dkms" # For dkms packages
+        cd "$MODULES_DIR/misc"         # For Oracle packages
+        ```
+
+   
+       . entrer la pass phrase de la clé (geronimo):
+
+        ```
+        echo -n "Passphrase for the private key: "
+        read -s KBUILD_SIGN_PIN
+        export KBUILD_SIGN_PIN
+        ```
+
+       . Signer les modules Virtualbox
+
+        ```
+        "$KBUILD_DIR"/scripts/sign-file sha256 /var/lib/shim-signed/mok/MOK.priv /var/lib/shim-signed/mok/MOK.der vboxdrv.ko
+        "$KBUILD_DIR"/scripts/sign-file sha256 /var/lib/shim-signed/mok/MOK.priv /var/lib/shim-signed/mok/MOK.der vboxnetflt.ko
+        "$KBUILD_DIR"/scripts/sign-file sha256 /var/lib/shim-signed/mok/MOK.priv /var/lib/shim-signed/mok/MOK.der vboxnetadp.ko
+        ```
+
+        ou signer tous les modules du répertoire:
+
+        ```
+        for i in *.ko
+        do
+          sudo --preserve-env=KBUILD_SIGN_PIN "$KBUILD_DIR"/scripts/sign-file sha256 /var/lib/shim-signed/mok/MOK.priv /var/lib/shim-signed/mok/MOK.der "$i"
+        done
+        ```
+
     * Environnements FEB connecté en utilisateur Standard
 
         ```
@@ -262,7 +384,10 @@
         * 2ème écran
 
         ```
-        xrandr --output HDMI-1 --auto --right-of eDP1  # active le 2ème écran
+        xrandr --output HDMI-1 --auto --right-of eDP-1  # active le 2ème écran à droite
+        xrandr --output HDMI-1 --auto --left-of  eDP-1  # active le 2ème écran à gauche
+        xrandr --output HDMI-1 --auto --above    eDP-1  # active le 2ème écran au dessus
+        xrandr --output HDMI-1 --auto --below    eDP-1  # active le 2ème écran au dessous
         ```
 
     * STATUT
@@ -302,3 +427,12 @@
         . radeontop : outil d’analyse pour les cartes AMD radeon
         . amdgpu-fan : outil de gestion des ventilateurs carte graphique
 
+## Debug i3, lightdm, xorg au démarrage
+        $ ps -ef | egrep -i "i3|dm|xorg"
+        $ systemctl status
+        $ systemctl status lightdm
+        $ cat /etc/X11/default-display-manager
+        $ cd /var/log
+          vi lightdm/x-0.log lightdm/lightdm.log lightdm/seat0-greeter.log Xorg.0.log messages syslog kern.log
+        $ sudo lightdm start
+        $ sudo dpkg-reconfigure lightdm
