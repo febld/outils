@@ -9,14 +9,39 @@
         ```
         simple-scan
         ```
+
+    * Commmandes/Alias lp utiles
+
+        ```
+        alias lp='lp -d HP_ENVY_5000_series_E763CC_USB_ -n 1'
+        alias lprv='lp -o sides=two-sided-long-edge'
+        alias lprv2='lp -o number-up=2'
+        alias scan-png='scanimage -d "airscan:e0:HP ENVY 5000 series [E763CC] (USB)" --format png'
+        ```
+    * Mise en forme d'un document PDF en format LIVRET avant impression
+
+        ```
+        bookletimposer
+        ```
+
+        Imprimer le document converti en recto-verso avec retournement sur Bord-Court
     
 ## 2ème écran
+
+        * Commandes XRANDR utiles
 
         ```
         xrandr --output HDMI-1 --auto --right-of eDP-1  # active le 2ème écran à droite
         xrandr --output HDMI-1 --auto --left-of  eDP-1  # active le 2ème écran à gauche
         xrandr --output HDMI-1 --auto --above    eDP-1  # active le 2ème écran au dessus
         xrandr --output HDMI-1 --auto --below    eDP-1  # active le 2ème écran au dessous
+        ```
+
+        * Exemples alias utiles
+
+        ```
+        alias xleft='xrandr --output HDMI-1 --left-of eDP-1 --auto'
+        alias xright='xrandr --output HDMI-1 --right-of eDP-1 --auto'
         ```
 
 ## Audio / bluethooth
