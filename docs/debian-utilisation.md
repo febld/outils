@@ -26,7 +26,10 @@
 
         Imprimer le document converti en recto-verso avec retournement sur Bord-Court
     
-## 2ème écran
+
+## Écran
+
+    ### 2ème écran avec Xorg (xrandr)
 
         * Commandes XRANDR utiles
 
@@ -42,6 +45,17 @@
         ```
         alias xleft='xrandr --output HDMI-1 --left-of eDP-1 --auto'
         alias xright='xrandr --output HDMI-1 --right-of eDP-1 --auto'
+        ```
+
+
+    ### 2ème écran avec Wayland (sway ...)
+
+        ÀFAIRE
+
+    ### Copie Écran dans un compositeur Wayland
+        ```
+         grim <FICHIER>.png               # copie entière de l'écran dans un fichier
+         slurp | grim -g - <FICHIER.png>  # copie d'une région de l'écran dans un fichier
         ```
 
 ## Audio / bluethooth
@@ -72,6 +86,7 @@
            <- -> : avance/recul de 10 secondes
            b     : prochain morceau
            z     : précédent morceau
+           i     : affiche le morceau en cours et ses informations
     * asunder : chargement de cd-audio et extraction en AAC, OGG, MP3, FLAC, WAV, ...
        
 

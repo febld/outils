@@ -35,6 +35,13 @@
          * $mod+d     : menu
          * $mod+Enter : terminal
 
+  * Sway
+
+        aptitude install sway
+        aptitude install xwayland
+
+     * config i3  : ~/.config/sway/config
+     * config i3  : touches idem i3
 
   * Virtualbox : installation adds-on sur Invité Linux
 
@@ -192,6 +199,11 @@
         aptitude install cmus         # lecteur musique
         ```
 
+        Firefox :
+            - activer le plugin "Cisco Codec H264" pour pouvoir avoir le mode video dans l'app web Teams
+            - en "i3" (Xorg), le partage d'écran semble fonctionner mais pas dans "sway" (Wayland) (À TESTER)
+
+
       * lecteur cd audio
 
         ```
@@ -236,6 +248,54 @@
         #wpa_supplicant -B -Dwext -i <INTERFACE> -c/etc/wpa_supplicant/wpa_supplicant.conf  # ne marche pas ??
 
         ifup wlp3s0
+        ```
+
+    * QEMU : installation Hôte sur Linux
+
+        Note : pour désactiver la capture souris de la fenêtre QEMU --> CTRL + left ALT ou CTRL+ALT+G
+
+        Vérifications matérielle :  manuelle (lscpu) ou via "virt-host-validate" de libvirt-clients
+
+        ```
+        lscpu | grep Virtualisation
+            Virtualisation :                        VT-x
+
+        sudo aptitude install libvirt-clients
+        virt-host-validate
+        ```
+
+
+    ** QEMU installation manuelle
+
+        ```
+        sudo apt install qemu-utils qemu-system-x86 qemu-system-gui
+        qemu-img create windows.img 40G
+        # ou avec format Qemu qcow2 "Copy On Write"
+        # qemu-img create -f qcow2 windows.qcow2 40G
+        
+        # conversion d'image VDI --> IMG
+        qemu-img convert -f vdi -O raw windows.vdi windows.img
+
+        # démarrage VMs
+        qemu-system-x86_64 -hda windows.qcow2 -cdrom /Donnees/outils/Windows10/Win10_21H1_French_x64.iso -boot d -m 2048
+        ```
+
+
+    ** QEMU installation via kvm
+
+        - VirtIO Drivers ISO :
+
+        ```
+        #curl https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso
+        curl https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-0.1.240-1/virtio-win-0.1.240.iso -o virtio-win
+        ```
+
+        - Windows 10 ISO : https://www.microsoft.com/en-us/software-download/windows10ISO
+
+        ```
+        #sudo aptitude install qemu-kvm libvirt-bin bridge-utils virt-manager qemu virt-viewer spice-vdagent
+        sudo aptitude install qemu-kvm virt-manager libvirt-daemon
+        virt-manager
         ```
 
     * Virtualbox : installation Hôte sur Linux
