@@ -32,29 +32,36 @@ TAILLE_MAX_NOM   = 12
 # ------------------------------------------------------------------------------
 def main():
 
-    if len( sys.argv ) != 3 :
+    if ( len( sys.argv ) != 3 and len( sys.argv ) != 4 ) :
         usage()
         quit()
-
-    listerEtRenommer( ".", sys.argv[1], sys.argv[2] )
+    if len( sys.argv ) == 3 :
+        listerEtRenommer( ".", sys.argv[1], sys.argv[2], 1 )
+    elif len( sys.argv ) == 4 :
+        listerEtRenommer( ".", sys.argv[1], sys.argv[2], int( sys.argv[3] ) )
 
 # ------------------------------------------------------------------------------
 # Usage
 # ------------------------------------------------------------------------------
 def usage():
     print( "" ) 
-    print( "Usage : " + os.path.basename(__file__) + " MOTIF_SRC MOTIF_DEST" )
+    print( "Usage : " + os.path.basename(__file__) + " MOTIF_SOURCE MOTIF_DESTINATION [INDEX_INITIAL]" )
+    print( "   MOTIF_SOURCE      = regex Python de filtrage des fichiers à renommer" )
+    print( "   MOTIF_DESTINATION = préfixe des nouveaux fichiers" )
+    print( "   INDEX_INITIAL     = index de numérotation initial (1 par défaut)" )
     print( "" )
     print( "Renomme une série de fichiers dans le répertoire courant :" )
-    print( "    . dont le nom commence par le motif MOTIF_SRC" )
+    print( "    . dont le nom commence par le motif MOTIF_SOURCE" )
     print( "    . vers un fichier avec un nom :" )
-    print( "         . commençant par le motif MOTIF_DEST" )
-    print( "         . suffixé par un index automatique" )
+    print( "         . commençant par le motif MOTIF_DESTINATION" )
+    print( "         . suffixé par un index automatique commençant à 1 ou INDEX_INITIAL si fourni" )
     print( "         . suffixé par l'extension du fichier original" )
     print( "" )
 
 # ------------------------------------------------------------------------------
-def listerEtRenommer( dossier, motifSrc, motifDst ):
+def listerEtRenommer( dossier, motifSrc, motifDst, indexInit ):
+
+    index = indexInit
 
     if not os.path.isdir( dossier ) :
         logErreur( "dossier source incorrect : " + dossier )
@@ -78,7 +85,6 @@ def listerEtRenommer( dossier, motifSrc, motifDst ):
     logInfo( f"TOTAL sélectionné   : {len( fichiers )} (pad={pad:d})" )
 
     # Vérification avant renommage des fichiers
-    index = 1
     onContinue = 1
     for root, ext in fichiers:
         cible = f"{motifDst}-{str(index).zfill(pad)}{ext}"
@@ -95,7 +101,7 @@ def listerEtRenommer( dossier, motifSrc, motifDst ):
         quit()
 
     # Renommage des fichiers
-    index = 1
+    index = indexInit
     for root, ext in fichiers:
         cible = f"{motifDst}-{str(index).zfill(pad)}{ext}"
         logInfo( f"Renommage fichier   : {root}{ext} --> {cible}" )

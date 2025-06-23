@@ -50,7 +50,17 @@
 
     ### 2ème écran avec Wayland (sway ...)
 
-        ÀFAIRE
+        * Commandes swaymsg utiles
+
+        ```
+        swaymsg output eDP-1 pos 0 1080 && swaymsg output HDMI-A-1 pos 0 0
+        ```
+
+        * Exemples alias utiles
+
+        ```
+        alias swaytop='swaymsg output eDP-1 pos 0 1080 && swaymsg output HDMI-A-1 pos 0 0'
+        ```
 
     ### Copie Écran dans un compositeur Wayland
         ```
@@ -109,12 +119,19 @@
 
         ```
         blkid
+        lsblk -f
         ```
 
     * Mettre à jour /etc/fstab
 
         ```
         UUID=XXX /mnt/ntfs-sauvegarde2  ntfs-3g   rw,relatime,user_id=0,group_id=0,allow_other,noauto  0       0
+        ```
+
+        ou par montage manuel (notamment si FAT32 car KO via fstab ???)
+
+        ```
+        mount -t vfat /dev/sdc1 /mnt/sdc1-vfat/ -o rw,umask=0000
         ```
 
     * Monter le disque
@@ -189,6 +206,32 @@
         iw wlp3s0 link
         iw dev wlp3s0 info
         ip a
+        ```
+
+## File Manager (mode commande
+
+    * installation MidnightCommander, Ranger, ViFM
+
+        ```
+        aptitude install mc ranger vifm
+        ```
+
+    * Utilisation
+
+        ```
+        mc
+        ranger
+        vifm
+        ```
+    * installation MidnightCommander, Ranger, ViFM
+
+        ```
+        aptitude install mc ranger vifm
+        ```
+    * installation MidnightCommander, Ranger, ViFM
+
+        ```
+        aptitude install mc ranger vifm
         ```
 
 ## Matériel / Pilote
