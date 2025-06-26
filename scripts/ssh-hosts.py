@@ -55,6 +55,15 @@ from pathlib import Path
 __version__ = "0.0.1"
 debug = False
 script = os.path.basename(__file__)
+confFilename = script + ".json"
+confPath = Path.home() / ".config" / script / confFilename
+jsonModele = """{
+    "hosts": [
+        { "nom" : "SERVEUR_1", "user" : "login1", "hostname" : "host1.mondomaine.com", "description" : "Description serveur 1" },
+        { "nom" : "SERVEUR_2", "user" : "login2", "hostname" : "host2.mondomaine2.fr", "description" : "Description serveur 2" }
+    ]
+}
+"""
 
 # ->>>--------------------------------------------------------------------------
 def principale():
@@ -64,6 +73,12 @@ def principale():
     if sys.version_info[0] < 3:
         print("Cette version de l'outil est conçue pour Python 3.")
         return
+    if not confPath.exists():
+        print("Erreur : créez un fichier de configuration avant de démarrer dans\n   " + str(confPath))
+        print("\nLe fichier est un fichier JSON répondant au modèle ci-dessous :" )
+        print( jsonModele )
+        return
+            
     
     presentation = PresentationTXT()
     presentation.demarrer()
@@ -116,7 +131,7 @@ class PresentationTXT(cmd.Cmd):
               +"=============================================\n"\
               +". aide|help    : affiche l'aide\n"\
               +". list         : liste les connexions SSH disponibles\n"\
-              +". start        : gère le démarrage des tunnels\n"\
+              +". ssh          : gère le démarrage d’une connexion SSH\n"\
               +". bye|salut    : quitte l'application\n"
               )
         
@@ -185,8 +200,8 @@ class PresentationTXT(cmd.Cmd):
     # -<<<----------------------------------------------------------------------
 
     # ->>>----------------------------------------------------------------------
-    def do_start(self, ligne):
-        """start ( <ID> | <NOM_SESSION_SSH> )
+    def do_ssh(self, ligne):
+        """ssh ( <ID> | <NOM_SESSION_SSH> )
         
         Gère le lancement d’une connexion SSH'
         """
@@ -195,7 +210,7 @@ class PresentationTXT(cmd.Cmd):
         if len(args) == 1 and len(args[0]) > 0:
             self.sessions.demarrer(args[0])
         else:
-            self.do_help("start")
+            self.do_help("ssh")
     # -<<<----------------------------------------------------------------------
     
     
@@ -211,8 +226,6 @@ class SessionsSSH():
     def __init__(self):
         
         print("Chargement config json ...")
-        confFilename = script + ".json"
-        confPath = Path.home() / ".config" / script / confFilename
         config = None
         if confPath.exists():
             with confPath.open() as f:
@@ -303,7 +316,7 @@ class Host():
             return
         
         commande = "ssh " + self.hostname
-        if not self.user is None :
+        if not self.user is None and len( self.user ) > 0 :
             commande = "ssh " + self.user + "@" + self.hostname
 
         print(" SSH : " + commande )
