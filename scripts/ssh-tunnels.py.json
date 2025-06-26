@@ -1,0 +1,15 @@
+{
+    "tunnels": [
+        {
+            "nom"            : "ssh-logcdr3",   "portLocal"      : "2023",
+            "distant"        : "X.y.z.t",       "portDistant"    : "22",
+            "serveurSSH"     : "a.b.c.d",       "utilisateurSSH" : "toto"
+        },
+        {
+            "nom"            : "https-logcdr4", "portLocal"      : "2084",
+            "distant"        : "p.q.r.s",       "portDistant"    : "443",
+            "serveurSSH"     : "a.b.c.d",       "utilisateurSSH" : "toto"
+        }
+    ]
+}
+
