@@ -1,0 +1,7 @@
+{
+    "hosts": [
+        { "nom" : "nom 1", "hostname" : "serveur1", "description"  : "Serveur 1", "user" : "fbelliard" },
+        { "nom" : "nom 2", "hostname" : "serveur2", "description"  : "Serveur 2", "user" : "fbelliard" }
+    ]
+}
+
