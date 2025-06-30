@@ -132,6 +132,7 @@ class PresentationTXT(cmd.Cmd):
               +". aide|help    : affiche l'aide\n"\
               +". list         : liste les connexions SSH disponibles\n"\
               +". ssh          : gère le démarrage d’une connexion SSH\n"\
+              +". sftp         : gère le démarrage d’une connexion SFTP\n"\
               +". bye|salut    : quitte l'application\n"
               )
         
@@ -208,16 +209,30 @@ class PresentationTXT(cmd.Cmd):
         
         args = self.separateurCmd.split(ligne)
         if len(args) == 1 and len(args[0]) > 0:
-            self.sessions.demarrer(args[0])
+            self.sessions.demarrer(args[0], "ssh")
         else:
             self.do_help("ssh")
+    # -<<<----------------------------------------------------------------------
+    
+    # ->>>----------------------------------------------------------------------
+    def do_sftp(self, ligne):
+        """sftp ( <ID> | <NOM_SESSION_SSH> )
+        
+        Gère le lancement d’une connexion SFTP'
+        """
+        
+        args = self.separateurCmd.split(ligne)
+        if len(args) == 1 and len(args[0]) > 0:
+            self.sessions.demarrer(args[0], "sftp")
+        else:
+            self.do_help("sftp")
     # -<<<----------------------------------------------------------------------
     
     
 
 # ->>>--------------------------------------------------------------------------
 class SessionsSSH():
-    """Classe gérant les sessions SSH.
+    """Classe gérant les sessions SSH/SFTP.
     """
     
     hosts = []
@@ -248,14 +263,15 @@ class SessionsSSH():
 
     # ->>>----------------------------------------------------------------------
     def afficherTous( self, motif ):
-        print( "{:>3}  {:<20}  {:<40}  Description".format( "ID", "Nom", "user@host" ) )
-        print( "{:>3}  {:<20}  {:<40}  {:<25}".format( "-" * 3, "-" * 20, "-" * 40, "-" * 25 ) )
+        modele = "{:>3}  {:<25}  {:<45}  {:<25}"
+        print( modele.format( "ID", "Nom", "user@host", "Description" ) )
+        print( modele.format( "-" * 3, "-" * 25, "-" * 45, "-" * 25 ) )
         i = 0
         for h in self.hosts:
             i += 1
             if ( ( not motif is None ) and ( not motif.lower() in h.nom.lower() ) ):
                 continue
-            print( "{:>3}  {:<20}  {:<40}  {}".format( i, h.nom, h.user + "@" + h.hostname, h.description ) )
+            print( modele.format( i, h.nom, h.user + "@" + h.hostname, h.description ) )
         print()
     # -<<<----------------------------------------------------------------------
     
@@ -267,13 +283,13 @@ class SessionsSSH():
     # -<<<----------------------------------------------------------------------
     
     # ->>>----------------------------------------------------------------------
-    def demarrer(self, nom):
+    def demarrer(self, nom, mode):
         if nom.isnumeric() and ( int( nom ) <= len( self.hosts ) ) :
-            self.hosts[ int( nom ) - 1 ].demarrer()
+                self.hosts[ int( nom ) - 1 ].demarrer( mode )
         else:
             for h in self.hosts:
                 if h.nom == nom:
-                    h.demarrer()
+                    h.demarrer( mode )
     # -<<<----------------------------------------------------------------------
     
 # -<< Classe SessionsSSH -------------------------------------------------------
@@ -303,23 +319,24 @@ class Host():
     # -<<<----------------------------------------------------------------------
         
     # ->>>----------------------------------------------------------------------
-    def demarrer(self):
-        """Démarre la connexion SSH
+    def demarrer(self, mode):
+        """Démarre une connexion SSH
         """
         
-        prefix = "SSH Host " + str(self.nom) + " : "
-        
+        if  mode is None or mode != "ssh" or mode != "sftp":
+            print( "ERREUR mode de commande non reconnu : {}".format( mode ) )
+
         if self.nom is None \
            or self.hostname is None :
             print( "Erreur : host mal configuré !" )
             self.afficherDetails() 
             return
         
-        commande = "ssh " + self.hostname
+        commande = mode + " " + self.hostname
         if not self.user is None and len( self.user ) > 0 :
-            commande = "ssh " + self.user + "@" + self.hostname
+            commande = mode + " " + self.user + "@" + self.hostname
 
-        print(" SSH : " + commande )
+        print(" SSH/SFTP : " + commande )
         os.system( commande )
     # -<<<----------------------------------------------------------------------
     
