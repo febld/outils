@@ -130,7 +130,8 @@ class PresentationTXT(cmd.Cmd):
               +" Commandes documentées\n"\
               +"=============================================\n"\
               +". aide|help    : affiche l'aide\n"\
-              +". list         : liste les connexions SSH disponibles\n"\
+              +". list         : liste les connexions disponibles\n"\
+              +". config       : recharge les connexions disponibles depuis le fichier de configuration\n"\
               +". ssh          : gère le démarrage d’une connexion SSH\n"\
               +". sftp         : gère le démarrage d’une connexion SFTP\n"\
               +". bye|salut    : quitte l'application\n"
@@ -201,6 +202,17 @@ class PresentationTXT(cmd.Cmd):
     # -<<<----------------------------------------------------------------------
 
     # ->>>----------------------------------------------------------------------
+    def do_config(self, ligne):
+        """config
+        
+        Recharge le fichier de configuration des connexions
+        """
+        
+        self.sessions.chargerConf()
+        self.sessions.afficherTous(None)
+    # -<<<----------------------------------------------------------------------
+
+    # ->>>----------------------------------------------------------------------
     def do_ssh(self, ligne):
         """ssh ( <ID> | <NOM_SESSION_SSH> )
         
@@ -240,6 +252,13 @@ class SessionsSSH():
     # ->>>----------------------------------------------------------------------
     def __init__(self):
         
+        self.chargerConf()
+        self.afficherTous(None)
+    # -<<<----------------------------------------------------------------------
+
+    # ->>>----------------------------------------------------------------------
+    def chargerConf(self):
+        
         print("Chargement config json ...")
         config = None
         if confPath.exists():
@@ -248,6 +267,7 @@ class SessionsSSH():
         else:
             print("Configuration n'existe pas : " + str(confPath))
             
+        self.hosts = []
         if config is not None:
             for t in config["hosts"] :
                 self.hosts.append(Host(
@@ -256,7 +276,6 @@ class SessionsSSH():
                     t["description"],
                     t["user"]
                     ))
-            self.afficherTous(None)
         else:
             print("Configuration is none")
     # -<<<----------------------------------------------------------------------
