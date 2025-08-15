@@ -157,6 +157,15 @@
         vm.dirty_background_bytes=16777216
         ```
 
+    * Démonter et arrêter un disque USB
+        ```
+        umount /mnt/sauvegarde1
+        sync
+        sync
+        #eject /dev/sdc1
+        udisksctl power-off -b /dev/sdc1
+        ```
+
 ## Réseau WIFI
 
     * Recherche d'interfaces réseau WIFI
