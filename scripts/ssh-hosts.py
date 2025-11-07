@@ -137,7 +137,7 @@ class PresentationTXT(cmd.Cmd):
               +". bye|salut    : quitte l'application\n"
               )
         
-        self.do_help(ligne)
+        #self.do_help(ligne)
     # -<<<----------------------------------------------------------------------
     
     # ->>>----------------------------------------------------------------------
@@ -191,7 +191,8 @@ class PresentationTXT(cmd.Cmd):
     def do_list(self, ligne):
         """list [<MOTIF>]
         
-        Affiche les connexions SSH disponibles ou si un MOTIF est fourni, uniquement celles contenant la chaine MOTIF dans leur nom
+        Affiche les connexions SSH disponibles.
+        Si un MOTIF est fourni, uniquement celles correspondant au MOTIF sont listées.
         """
         
         args = self.separateurCmd.split(ligne)
@@ -205,7 +206,7 @@ class PresentationTXT(cmd.Cmd):
     def do_config(self, ligne):
         """config
         
-        Recharge le fichier de configuration des connexions
+        Recharge le fichier de configuration des connexions.
         """
         
         self.sessions.chargerConf()
@@ -216,7 +217,7 @@ class PresentationTXT(cmd.Cmd):
     def do_ssh(self, ligne):
         """ssh ( <ID> | <NOM_SESSION_SSH> )
         
-        Gère le lancement d’une connexion SSH'
+        Lance une connexion SSH pour la session en argument.
         """
         
         args = self.separateurCmd.split(ligne)
@@ -230,7 +231,7 @@ class PresentationTXT(cmd.Cmd):
     def do_sftp(self, ligne):
         """sftp ( <ID> | <NOM_SESSION_SSH> )
         
-        Gère le lancement d’une connexion SFTP'
+        Lance une connexion SFTP pour la session en argument.
         """
         
         args = self.separateurCmd.split(ligne)
@@ -342,11 +343,11 @@ class Host():
         """Démarre une connexion SSH
         """
         
-        if  mode is None or mode != "ssh" or mode != "sftp":
+        if  ( mode is None ) or ( mode != "ssh" and mode != "sftp" ):
             print( "ERREUR mode de commande non reconnu : {}".format( mode ) )
+            return
 
-        if self.nom is None \
-           or self.hostname is None :
+        if self.nom is None or self.hostname is None :
             print( "Erreur : host mal configuré !" )
             self.afficherDetails() 
             return
